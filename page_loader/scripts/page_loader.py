@@ -1,8 +1,9 @@
 #!/usr/bin/env python
+from page_loader import download
+
 
 def main():
-    print('start')
-    return 'start'
+    return download()
 
 
 if __name__ == '__main__':
