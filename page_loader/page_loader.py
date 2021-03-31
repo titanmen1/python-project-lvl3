@@ -12,6 +12,7 @@ def download(url, path=''):
     # url = 'https://ru.hexlet.io/courses'
 
     data = requests.get(url)
+    data.raise_for_status()
     # path = '/home/artem/projects/python-project-lvl3/download/'
 
     filename = get_filename(url)
