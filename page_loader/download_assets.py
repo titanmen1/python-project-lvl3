@@ -1,3 +1,4 @@
+import logging
 import os
 
 import requests
@@ -17,7 +18,7 @@ attribute_mapping = {
 
 def download_assets(html, page_url, assets_dir_name, assets_path):
     soup = BeautifulSoup(html, 'html.parser')
-
+    logging.info('write html file: %s', "тест")
     tag_list = soup.find_all(['link', 'script', 'img'])
     for source_tag in tag_list:
         # src_or_href = choose_src_or_href_attribute(source_tag)
