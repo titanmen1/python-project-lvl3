@@ -21,7 +21,6 @@ def download_assets(html, page_url, assets_dir_name, assets_path):
     logging.info('write html file: %s', "тест")
     tag_list = soup.find_all(['link', 'script', 'img'])
     for source_tag in tag_list:
-        # src_or_href = choose_src_or_href_attribute(source_tag)
         attr_name = attribute_mapping[source_tag.name]
         asset_url = source_tag.get(attr_name)
 
@@ -45,7 +44,7 @@ def download_assets(html, page_url, assets_dir_name, assets_path):
                 output_file.write(chunk)
         # -------------------
 
-        source_tag[asset_url] = os.path.join(assets_dir_name, file_name)
+        source_tag[attr_name] = os.path.join(assets_dir_name, file_name)
 
     html_with_local_links = soup.prettify(formatter="html5")
     return html_with_local_links
