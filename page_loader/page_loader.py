@@ -17,7 +17,7 @@ def download(url, path=''):
     filename = get_filename(url)
     dirname = get_dirname(url)
 
-    full_path = os.path.join(os.getcwd(), path)
+    full_path = os.getcwd() + path
     file_path = os.path.join(full_path, filename)
     logging.info('output path: %s', full_path)
     assets_path = os.path.join(full_path, dirname)
