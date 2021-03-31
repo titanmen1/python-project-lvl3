@@ -1,9 +1,10 @@
 #!/usr/bin/env python
-from page_loader import download
+from page_loader import download, arg_parser
 
 
 def main():
-    return download()
+    args = arg_parser.parse()
+    print(download(args.url, args.output))
 
 
 if __name__ == '__main__':

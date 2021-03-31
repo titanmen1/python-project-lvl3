@@ -2,6 +2,9 @@
 install:
 	poetry install
 
+run:
+	poetry run page-loader
+
 build:
 	poetry build
 
@@ -12,7 +15,7 @@ package-install:
 	python -m pip install dist/*.whl
 
 pr:
-	python -m pip uninstall hexlet-code
+	python -m pip uninstall hexlet-code -y
 
 lint:
 	poetry run flake8 page_loader
