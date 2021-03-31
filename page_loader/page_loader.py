@@ -21,7 +21,8 @@ def download(url, path=''):
     file_path = os.path.join(full_path, filename)
     logging.info('output path: %s', full_path)
     assets_path = os.path.join(full_path, dirname)
-
+    if not os.path.exists(assets_path):
+        os.mkdir(assets_path)
     result = download_assets(data.text, url, dirname, assets_path)
 
     with open(file_path, 'w') as file:

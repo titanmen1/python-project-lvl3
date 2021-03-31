@@ -37,8 +37,7 @@ def download_assets(html, page_url, assets_dir_name, assets_path):
 
         # -------------------
         response = requests.get(full_asset_url, stream=True)
-        if not os.path.exists(assets_path):
-            os.mkdir(assets_path)
+
 
         with open(os.path.join(assets_path, file_name), 'wb',) as output_file:
             chunk_size = 128
