@@ -2,6 +2,7 @@ import os
 
 import requests
 
+from page_loader.download_assets import download_assets
 from page_loader.url_parse import get_filename, get_dirname
 
 
@@ -17,6 +18,10 @@ def download(url, path=''):
     full_path = os.path.join(os.getcwd() + path)
     file_path = os.path.join(full_path, filename)
 
+    assets_path = os.path.join(full_path, dirname)
+
+    result = download_assets(data.text, url, dirname, assets_path)
+
     with open(file_path, 'w') as file:
-        file.write(data.text)
+        file.write(result)
     return file_path
