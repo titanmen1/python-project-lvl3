@@ -9,11 +9,11 @@ def main():
     args = arg_parser.parse()
     try:
         logging.basicConfig(level=logging.INFO)
-        print(download(args.url, args.output))
+        logging.info('Start download')
+        print('Path webpage: ', download(args.url, args.output))
     except Exception as e:
-        logging.error(e)
+        logging.critical(e)
         sys.exit(1)
-
 
 
 if __name__ == '__main__':

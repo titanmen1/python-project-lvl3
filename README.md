@@ -7,3 +7,18 @@
 
 ## Простое скачивание страницы без материалов
 [![asciicast](https://asciinema.org/a/gCk9WMjr7hI2aPuhQJrndsc5L.svg)](https://asciinema.org/a/gCk9WMjr7hI2aPuhQJrndsc5L)
+
+## Скачивание изображений
+[![asciicast](https://asciinema.org/a/feTUoaKYtxuXNa7YkKgtdDpY9.svg)](https://asciinema.org/a/feTUoaKYtxuXNa7YkKgtdDpY9)
+
+## Скачивание всех материалов
+[![asciicast](https://asciinema.org/a/NnEIvQOGAg3nxNE1aDbim0aaW.svg)](https://asciinema.org/a/NnEIvQOGAg3nxNE1aDbim0aaW)
+
+## Добавление логгирования
+[![asciicast](https://asciinema.org/a/mz8fgYFJjllWKCzOvtJ8WdCUW.svg)](https://asciinema.org/a/mz8fgYFJjllWKCzOvtJ8WdCUW)
+
+## Обработка ошибок
+[![asciicast](https://asciinema.org/a/1Nu8q4vXy1KICKJ8OAoo3WUD5.svg)](https://asciinema.org/a/1Nu8q4vXy1KICKJ8OAoo3WUD5)
+
+## Отображение прогресса
+[![asciicast](https://asciinema.org/a/xK5FZ0H4RJiUZKWHUR408B32F.svg)](https://asciinema.org/a/xK5FZ0H4RJiUZKWHUR408B32F)

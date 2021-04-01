@@ -1,60 +1,54 @@
-import logging
 import os
-
 import requests
-from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
-
+from bs4 import BeautifulSoup
+from progress.bar import Bar
 from page_loader.url_parse import get_filename
 
-attribute_mapping = {
-    'link': 'href',
-    'script': 'src',
-    'img': 'src'
-}
 
-
-
-
-def download_assets(html, page_url, assets_dir_name, assets_path):
+def modification_page(html, page_url, assets_dir_name, assets_path):
     soup = BeautifulSoup(html, 'html.parser')
-    logging.info('write html file: %s', "тест")
     tag_list = soup.find_all(['link', 'script', 'img'])
+    bar = Bar('Processing', max=len(tag_list))
+
     for source_tag in tag_list:
-        attr_name = attribute_mapping[source_tag.name]
-        asset_url = source_tag.get(attr_name)
+        attribute_name = choose_attribute(source_tag.name)
+        short_asset_url = source_tag.get(attribute_name)
 
-        if not asset_url:
+        if not short_asset_url:
+            bar.next()
             continue
 
-        full_asset_url = urljoin(page_url + '/', asset_url)
+        full_asset_url = urljoin(page_url + '/', short_asset_url)
 
-        if urlparse(full_asset_url).netloc != urlparse(page_url).netloc:
-            continue
+        if urlparse(full_asset_url).netloc == urlparse(page_url).netloc:
+            filename = get_filename(full_asset_url)
+            # -------------------
+            full_asset_path = os.path.join(assets_path, filename)
+            download_assets(full_asset_url, full_asset_path)
+            # -------------------
+            source_tag[attribute_name] = os.path.join(assets_dir_name, filename)
+        bar.next()
 
-        file_name = get_filename(full_asset_url)
-
-        # -------------------
-        response = requests.get(full_asset_url, stream=True)
-
-
-        with open(os.path.join(assets_path, file_name), 'wb',) as output_file:
-            chunk_size = 128
-            for chunk in response.iter_content(chunk_size=chunk_size):
-                output_file.write(chunk)
-        # -------------------
-
-        source_tag[attr_name] = os.path.join(assets_dir_name, file_name)
-
-    html_with_local_links = soup.prettify(formatter="html5")
-    return html_with_local_links
+    bar.finish()
+    return soup.prettify(formatter="html5")
 
 
-def choose_src_or_href_attribute(tag):
-    if tag.get('src'):
-        return 'src'
-    if tag.get('href'):
+def choose_attribute(tag):
+    if tag == 'link':
         return 'href'
-    else:
-        return False
+    if tag == 'script':
+        return 'src'
+    if tag == 'img':
+        return 'src'
+
+
+def download_assets(url, full_asset_path):
+    response = requests.get(url, stream=True)
+    save_file(response.content, full_asset_path)
+
+
+def save_file(data, path):
+    with open(path, 'wb') as output_file:
+        output_file.write(data)
 
