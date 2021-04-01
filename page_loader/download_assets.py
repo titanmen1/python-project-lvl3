@@ -27,7 +27,10 @@ def modification_page(html, page_url, assets_dir_name, assets_path):
             full_asset_path = os.path.join(assets_path, filename)
             download_assets(full_asset_url, full_asset_path)
             # -------------------
-            source_tag[attribute_name] = os.path.join(assets_dir_name, filename)
+            source_tag[attribute_name] = os.path.join(
+                assets_dir_name,
+                filename
+            )
         bar.next()
 
     bar.finish()
@@ -51,4 +54,3 @@ def download_assets(url, full_asset_path):
 def save_file(data, path):
     with open(path, 'wb') as output_file:
         output_file.write(data)
-

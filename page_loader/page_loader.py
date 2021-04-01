@@ -1,7 +1,7 @@
 import logging
 import os
 import requests
-from page_loader.download_assets import modification_page, save_file
+from page_loader.download_assets import modification_page
 from page_loader.url_parse import get_filename, get_dirname
 
 

@@ -1,4 +1,6 @@
 import tempfile
+
+import pytest
 import requests_mock
 import os
 
@@ -53,3 +55,17 @@ def test_download():
         with open(os.path.join(temp_dir, file_and_dir_name + '_files', css_filename), 'r') as download_css_file:
             with open('./tests/fixture/notepadonline-ru-_files/' + css_filename, 'r') as test_css_file:
                 assert download_css_file.read() == test_css_file.read()
+
+
+@pytest.mark.parametrize('code', [403, 404, 500, 501, 502])
+def test_errors_response(requests_mock, code):
+    url = 'http://testsite.test/' + str(code)
+    requests_mock.get(url, status_code=code)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        with pytest.raises(Exception):
+            assert download(url, temp_dir)
+
+
+def test_error_dirname():
+    with pytest.raises(Exception):
+        assert download(URL, '/download')

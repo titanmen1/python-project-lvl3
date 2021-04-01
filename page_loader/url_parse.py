@@ -27,6 +27,3 @@ def url_to_string(url):
 
 def replace_chars(s):
     return re.sub(re.compile(r'[^0-9a-zA-Z]+'), '-', s)
-
-
-
