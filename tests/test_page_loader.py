@@ -63,8 +63,8 @@ def test_download():
         with open(os.path.join(temp_dir,
                                file_and_dir_name + '_files',
                                css_filename), 'r') as download_css_file:
-            with open('./tests/fixture/notepadonline-ru-_files/' +
-                      css_filename, 'r') as test_css_file:
+            with open('./tests/fixture/notepadonline-ru-_files/'
+                      + css_filename, 'r') as test_css_file:
                 assert download_css_file.read() == test_css_file.read()
 
 
