@@ -43,11 +43,12 @@ def test_download_assets():
                                  file_and_dir_name + '_files',
                                  'notepadonline-ru-banners-strap.gif')
         download_assets(URL_ASSET, file_path)
-        assert open(file_path, 'rb').read()\
-               == open('./tests/fixture/' +
-                       file_and_dir_name +
-                       '_files/' +
-                       'notepadonline-ru-banners-strap.gif', 'rb').read()
+        assert open(file_path, 'rb').read() == open('./tests/fixture/' +
+                                                    file_and_dir_name +
+                                                    '_files/' +
+                                                    'notepadonline-ru-' +
+                                                    'banners-strap.gif',
+                                                    'rb').read()
 
 
 def test_download():
