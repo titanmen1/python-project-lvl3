@@ -4,6 +4,12 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/4b52d2a2e5ccd1261bf6/test_coverage)](https://codeclimate.com/github/titanmen1/python-project-lvl3/test_coverage)
 [![Actions Status](https://github.com/titanmen1/python-project-lvl3/workflows/CI/badge.svg)](https://github.com/titanmen1/python-project-lvl3/actions)
 
+# Библиотека для скачивания веб страниц с материалами.
+```
+page-loader --output 'Название папки, куда сохранить' url который нужно сохранить
+Например:
+page-loader --output 'download' https://notepadonline.ru/
+```
 
 ## Простое скачивание страницы без материалов
 [![asciicast](https://asciinema.org/a/gCk9WMjr7hI2aPuhQJrndsc5L.svg)](https://asciinema.org/a/gCk9WMjr7hI2aPuhQJrndsc5L)
