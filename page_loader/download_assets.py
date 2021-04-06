@@ -6,7 +6,7 @@ from progress.bar import Bar
 from page_loader.url_parse import get_filename
 
 
-def modification_page(html, page_url, assets_dir_name, assets_path):
+def download_assets(html, page_url, assets_dir_name, assets_path):
     soup = BeautifulSoup(html, 'html.parser')
     tag_list = soup.find_all(['link', 'script', 'img'])
     bar = Bar('Processing', max=len(tag_list))
@@ -25,7 +25,7 @@ def modification_page(html, page_url, assets_dir_name, assets_path):
             filename = get_filename(full_asset_url)
             # -------------------
             full_asset_path = os.path.join(assets_path, filename)
-            download_assets(full_asset_url, full_asset_path)
+            download_asset(full_asset_url, full_asset_path)
             # -------------------
             source_tag[attribute_name] = os.path.join(
                 assets_dir_name,
@@ -46,7 +46,8 @@ def choose_attribute(tag):
         return 'src'
 
 
-def download_assets(url, full_asset_path):
+def download_asset(url, full_asset_path):
+    print(url)
     response = requests.get(url, stream=True)
     save_file(response.content, full_asset_path)
 

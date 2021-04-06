@@ -1,7 +1,7 @@
 import logging
 import os
 import requests
-from page_loader.download_assets import modification_page
+from page_loader.download_assets import download_assets
 from page_loader.url_parse import get_filename, get_dirname
 
 
@@ -21,7 +21,7 @@ def download(url, path=''):
         logging.info('create directory for assets: {0}'.format(assets_path))
         os.mkdir(assets_path)
 
-    updated_html = modification_page(data.text, url, dirname, assets_path)
+    updated_html = download_assets(data.text, url, dirname, assets_path)
     with open(file_path, 'w') as file:
         file.write(updated_html)
     return file_path

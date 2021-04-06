@@ -1,19 +1,41 @@
 import tempfile
+from urllib.parse import urljoin
 
 import pytest
 import os
 
-from page_loader.download_assets import download_assets
 from page_loader.url_parse import get_filename, get_dirname, \
-    url_to_string, replace_chars
+    url_to_slug_and_ext, replace_chars
 
 from page_loader import download
 
 
-URL = 'https://notepadonline.ru/'
-URL_ASSET = 'https://notepadonline.ru/banners/strap.gif'
-file_and_dir_name = 'notepadonline-ru-'
-css_filename = 'notepadonline-ru-css-style.css'
+URL = 'http://site.com/blog/about.html'
+BASE_URL = 'http://site.com/'
+file_and_dir_name = 'site-com-blog-about'
+
+ASSETS = [
+    {
+        'url_path': '/blog/about/assets/styles.css',
+        'file_name': 'site-com-blog-about-assets-styles.css',
+    },
+    {
+        'url_path': '/photos/me.jpg',
+        'file_name': 'site-com-photos-me.jpg',
+    },
+    {
+        'url_path': '/assets/scripts.js',
+        'file_name': 'site-com-assets-scripts.js',
+    },
+    {
+        'url_path': '/blog/about',
+        'file_name': 'site-com-blog-about.html',
+    },
+]
+
+
+def get_path(filename):
+    return os.path.join(os.getcwd(), 'tests', 'fixture', filename)
 
 
 def test_create_name_file():
@@ -25,47 +47,56 @@ def test_create_name_dir():
 
 
 def test_url_to_string_and_ext():
-    filename_without_ext, ext = url_to_string(URL)
+    filename_without_ext, ext = url_to_slug_and_ext(URL)
     assert filename_without_ext == file_and_dir_name
     assert ext == '.html'
 
 
 def test_replace_chars():
-    assert replace_chars('notepadonline.ru/') == file_and_dir_name
+    assert replace_chars('site.com/blog/about') == file_and_dir_name
 
 
-def test_download_assets():
+def test_download(requests_mock):
+    for asset in ASSETS:
+        asset_url = urljoin(BASE_URL, asset['url_path'])
+        asset_path = os.path.join(os.getcwd(),
+                                  'tests',
+                                  'fixture',
+                                  'site-com-blog-about_files',
+                                  asset['file_name'],
+                                  )
+        with open(asset_path, 'rb') as file:
+            asset_content = file.read()
+        requests_mock.get(asset_url, content=asset_content)
+
     with tempfile.TemporaryDirectory() as temp_dir:
-        os.mkdir(os.path.join(temp_dir,
-                              file_and_dir_name + '_files'))
-        file_path = os.path.join(temp_dir,
-                                 file_and_dir_name + '_files',
-                                 'notepadonline-ru-banners-strap.gif')
-        download_assets(URL_ASSET, file_path)
-        assert open(file_path, 'rb').read() == open('./tests/fixture/'
-                                                    + file_and_dir_name
-                                                    + '_files/'
-                                                    + 'notepadonline-ru-'
-                                                    + 'banners-strap.gif',
-                                                    'rb').read()
-
-
-def test_download():
-    with tempfile.TemporaryDirectory() as temp_dir:
+        with open(get_path('init-site-com-blog-about.html'),
+                  'r') as test_page:
+            test_page_contend = test_page.read()
+        requests_mock.get(URL, text=test_page_contend)
         file_path = download(URL, temp_dir)
         test_path = os.path.join(temp_dir, file_and_dir_name + '.html')
         assert file_path == test_path
         with open(file_path, 'r') as download_page:
-            with open('./tests/fixture/notepadonline-ru-.html',
-                      'r') as test_page:
-                assert download_page.read() == test_page.read()
+            with open(get_path('site-com-blog-about.html'),
+                      'r') as file_for_test:
+                assert download_page.read() == file_for_test.read()
 
-        with open(os.path.join(temp_dir,
-                               file_and_dir_name + '_files',
-                               css_filename), 'r') as download_css_file:
-            with open('./tests/fixture/notepadonline-ru-_files/'
-                      + css_filename, 'r') as test_css_file:
-                assert download_css_file.read() == test_css_file.read()
+        for asset in ASSETS:
+            asset_path = os.path.join(
+                temp_dir,
+                file_and_dir_name + '_files',
+                asset['file_name'],
+            )
+            with open(asset_path, 'rb') as asset_file:
+                asset_content = asset_file.read()
+                with open(os.path.join(os.getcwd(),
+                                       'tests',
+                                       'fixture',
+                                       'site-com-blog-about_files',
+                                       asset['file_name']), 'rb') as test_file:
+                    test_asset_file = test_file.read()
+                    assert asset_content == test_asset_file
 
 
 @pytest.mark.parametrize('code', [403, 404, 500, 501, 502])
