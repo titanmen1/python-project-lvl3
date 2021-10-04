@@ -1,18 +1,22 @@
 #!/usr/bin/env python
+
+import logging
 import sys
 
-from page_loader import download, arg_parser
-import logging
+from page_loader.cli import parse_args
+from page_loader import download
 
 
 def main():
-    args = arg_parser.parse()
+    args = parse_args()
+
+    logging.basicConfig(level=logging.INFO)
+
     try:
-        logging.basicConfig(level=logging.INFO)
-        logging.info('Start download')
-        print('Path webpage: ', download(args.url, args.output))
+        filepath = download(args.url, args.output)
+        print(f"Page was downloaded as '{filepath}'")
     except Exception as e:
-        logging.critical(e)
+        logging.error(e)
         sys.exit(1)
 
 
