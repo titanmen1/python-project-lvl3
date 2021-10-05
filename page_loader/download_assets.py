@@ -34,7 +34,7 @@ def download_assets(html, page_url, assets_dir_name, assets_path):
         bar.next()
 
     bar.finish()
-    return soup.prettify(formatter="html5")
+    return soup.prettify()
 
 
 def choose_attribute(tag):
