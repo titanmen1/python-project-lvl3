@@ -36,7 +36,7 @@ def prepare_assets(html, url, assets_dir_name):
         assets.append((full_asset_url, file_name))
         tag[attr_name] = os.path.join(assets_dir_name, file_name)
 
-    return (page.prettify(formatter="html5"), assets)
+    return (page.prettify(), assets)
 
 
 def download_assets(assets_path, assets):
